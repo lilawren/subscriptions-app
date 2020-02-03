@@ -37,9 +37,13 @@ function PlanSelector({
             <Form.Input
               value={seats}
               onBlur={(e) => {
-                onSeatsChange(parseInt(e.target.value));
+                onSeatsChange(seats);
               }}
-              onChange={(e) => setSeats(parseInt(e.target.value))}
+              onChange={(e) =>
+                setSeats(
+                  isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)
+                )
+              }
             />
           </Form>
           <div className='quiet'>Seats</div>

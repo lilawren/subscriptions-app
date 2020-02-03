@@ -66,7 +66,7 @@ function Subscriptions() {
       case subscriptionViewState.SUBSCRIPTION_SELECTION:
         return (
           <div>
-            <h1>Subscriptions</h1>
+            <h1>Subscription</h1>
             {isLoadingUpdateSubscription || isLoadingSubscription ? (
               <Loader active />
             ) : (

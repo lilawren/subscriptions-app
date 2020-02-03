@@ -5,6 +5,9 @@
   border: 1px solid #eaeaea;
   display: flex;
   justify-content: center;
+  @media only screen and (max-width: 800px) {
+    padding: 30px;
+  }
   .plan-selector {
     text-align: center;
     display: grid;

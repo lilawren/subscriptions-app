@@ -17,6 +17,16 @@ function SubscriptionSelection({
   const [selectedSeats, setSelectedSeats] = useState(subscriptionData.seats);
   const [cost, setCost] = useState(subscriptionData.cost);
 
+  const hasPlanOrSeatsChanged =
+    subscriptionData.plan !== selectedPlan ||
+    subscriptionData.seats !== selectedSeats;
+
+  useEffect(() => {
+    if (hasPlanOrSeatsChanged) {
+      getSubscriptionPreview();
+    }
+  }, [selectedPlan, selectedSeats, hasPlanOrSeatsChanged]);
+
   async function getSubscriptionPreview() {
     setIsLoadingPreview(true);
     try {
@@ -34,16 +44,6 @@ function SubscriptionSelection({
       console.log(e);
     }
   }
-
-  const hasPlanOrSeatsChanged =
-    subscriptionData.plan !== selectedPlan ||
-    subscriptionData.seats !== selectedSeats;
-
-  useEffect(() => {
-    if (hasPlanOrSeatsChanged) {
-      getSubscriptionPreview();
-    }
-  }, [selectedPlan, selectedSeats]);
 
   return (
     <div className='subscription-selection-container'>
