@@ -1,37 +1,46 @@
-import React, { useState } from 'react';
-import './PlanSelector.scss';
-import { Dropdown, Input } from 'semantic-ui-react';
+import React, { useState } from "react";
+import "./PlanSelector.scss";
+import { Dropdown, Input } from "semantic-ui-react";
 
-const planOptions = ['Basic', 'Good', 'Better', 'Best'].map((option) => ({
-  value: option,
-  text: option,
+const planOptions = ["Basic", "Good", "Better", "Best"].map(option => ({
+  value: option.toLowerCase(),
+  text: option
 }));
 
-function PlanSelector() {
-  const [selectedPlan, setSelectedPlan] = useState(planOptions[0].value);
-
+function PlanSelector({
+  currentPlan,
+  currentSeats,
+  cost,
+  onPlanChange,
+  onSeatsChange
+}) {
   return (
-    <div className='plan-selector-container'>
-      <div className='plan-selector'>
+    <div className="plan-selector-container">
+      <div className="plan-selector">
         <div>
           <Dropdown
             options={planOptions}
             fluid
             selection
-            value={selectedPlan}
+            defaultValue={currentPlan}
             onChange={(e, { value }) => {
-              setSelectedPlan(value);
+              onPlanChange(value);
             }}
           />
-          <div className='quiet'>Plan</div>
+          <div className="quiet">Plan</div>
         </div>
         <div>
-          <Input defaultValue={1} />
-          <div className='quiet'>Seats</div>
+          <Input
+            defaultValue={currentSeats}
+            onBlur={e => {
+              onSeatsChange(e.target.value);
+            }}
+          />
+          <div className="quiet">Seats</div>
         </div>
         <div>
-          $1000
-          <div className='quiet'>Price</div>
+          {`$${cost}`}
+          <div className="quiet">Price</div>
         </div>
       </div>
     </div>
