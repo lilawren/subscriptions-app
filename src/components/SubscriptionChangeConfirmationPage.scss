@@ -1,0 +1,11 @@
+.subscription-change-confirmation-container {
+  .subscriptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 20px;
+    grid-gap: 20px;
+    @media only screen and (max-width: 800px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

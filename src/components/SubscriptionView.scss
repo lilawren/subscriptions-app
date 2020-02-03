@@ -1,0 +1,16 @@
+.subscription-view {
+  padding: 40px;
+  background: white;
+  h4 {
+    margin-bottom: 30px;
+  }
+  .details {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+
+    .updated {
+      color: #30aabc;
+    }
+  }
+}

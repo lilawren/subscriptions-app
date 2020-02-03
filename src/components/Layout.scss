@@ -1,0 +1,12 @@
+.layout-container {
+  display: flex;
+  justify-content: center;
+  background: #f8f8f8;
+  height: 100vh;
+
+  .layout-content {
+    margin-top: 20px;
+    max-width: 70%;
+    width: 100%;
+  }
+}
