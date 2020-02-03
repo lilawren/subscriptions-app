@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./PlanSelector.scss";
-import { Dropdown, Input } from "semantic-ui-react";
+import { Dropdown, Input, Loader } from "semantic-ui-react";
 
 const planOptions = ["Basic", "Good", "Better", "Best"].map(option => ({
   value: option.toLowerCase(),
@@ -12,7 +12,8 @@ function PlanSelector({
   currentSeats,
   cost,
   onPlanChange,
-  onSeatsChange
+  onSeatsChange,
+  isLoadingCost
 }) {
   return (
     <div className="plan-selector-container">
@@ -33,13 +34,13 @@ function PlanSelector({
           <Input
             defaultValue={currentSeats}
             onBlur={e => {
-              onSeatsChange(e.target.value);
+              onSeatsChange(parseInt(e.target.value));
             }}
           />
           <div className="quiet">Seats</div>
         </div>
         <div>
-          {`$${cost}`}
+          {isLoadingCost ? <Loader inline active /> : <>{`$${cost}`}</>}
           <div className="quiet">Price</div>
         </div>
       </div>
