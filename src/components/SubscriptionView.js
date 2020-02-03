@@ -10,7 +10,9 @@ function SubscriptionView({ title, plan, seats, price, updatedFields }) {
         <span className='quiet'>{title}</span>
         <span
           className={classNames('bold', {
-            updated: updatedFields && updatedFields.indexOf(title) !== -1,
+            updated:
+              updatedFields &&
+              updatedFields.indexOf(title.toLowerCase()) !== -1,
           })}
         >
           {value}
@@ -33,7 +35,7 @@ function SubscriptionView({ title, plan, seats, price, updatedFields }) {
         })}
         {renderSubscriptionViewRow({
           title: 'Price',
-          value: price,
+          value: `$${price}`,
         })}
       </div>
     </div>

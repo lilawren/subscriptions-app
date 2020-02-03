@@ -22,10 +22,13 @@ function Subscriptions() {
 
   const [subscriptionData, setSubscriptionData] = useState({});
   const [isLoadingSubscription, setIsLoadingSubscription] = useState(true);
+  const [subscriptionPreviewData, setSubscriptionPreviewData] = useState({});
 
   useEffect(() => {
-    getCurrentSubscription();
-  }, []);
+    if (currentView === subscriptionViewState.SUBSCRIPTION_SELECTION) {
+      getCurrentSubscription();
+    }
+  }, [currentView]);
 
   async function getCurrentSubscription() {
     try {
@@ -38,13 +41,19 @@ function Subscriptions() {
     }
   }
 
-  async function onUpdateSubscriptionClick(payload) {
+  async function onUpdateSubscriptionClick({
+    plan,
+    seats,
+    subscriptionPreviewData
+  }) {
     setIsLoadingUpdateSubscription(true);
     try {
       await axios.put("http://localhost:5000/api/current", {
-        data: payload
+        plan,
+        seats
       });
       setIsLoadingUpdateSubscription(false);
+      setSubscriptionPreviewData(subscriptionPreviewData);
       setCurrentView(subscriptionViewState.SUBSCRIPTION_CHANGE_CONFIRMATION);
     } catch (e) {
       console.log(e);
@@ -72,6 +81,8 @@ function Subscriptions() {
       case subscriptionViewState.SUBSCRIPTION_CHANGE_CONFIRMATION:
         return (
           <SubscriptionChangeConfirmationPage
+            oldSubscription={subscriptionData}
+            newSubscription={subscriptionPreviewData}
             onBackClick={() =>
               setCurrentView(subscriptionViewState.SUBSCRIPTION_SELECTION)
             }
