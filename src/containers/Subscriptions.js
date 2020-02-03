@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import "./Subscriptions.scss";
-import SubscriptionSelection from "../components/SubscripionSelection";
-import SubscriptionChangeConfirmationPage from "../components/SubscriptionChangeConfirmationPage";
-import axios from "axios";
-import { Loader } from "semantic-ui-react";
+import React, { useState, useEffect } from 'react';
+import './Subscriptions.scss';
+import SubscriptionSelection from '../components/SubscripionSelection';
+import SubscriptionChangeConfirmationPage from '../components/SubscriptionChangeConfirmationPage';
+import axios from 'axios';
+import { Loader } from 'semantic-ui-react';
 
 const subscriptionViewState = {
-  SUBSCRIPTION_SELECTION: "SUBSCRIPTION_SELECTION",
-  SUBSCRIPTION_CHANGE_CONFIRMATION: "SUBSCRIPTION_CHANGE_CONFIRMATION"
+  SUBSCRIPTION_SELECTION: 'SUBSCRIPTION_SELECTION',
+  SUBSCRIPTION_CHANGE_CONFIRMATION: 'SUBSCRIPTION_CHANGE_CONFIRMATION',
 };
 
 function Subscriptions() {
@@ -17,7 +17,7 @@ function Subscriptions() {
 
   const [
     isLoadingUpdateSubscription,
-    setIsLoadingUpdateSubscription
+    setIsLoadingUpdateSubscription,
   ] = useState(false);
 
   const [subscriptionData, setSubscriptionData] = useState({});
@@ -31,8 +31,9 @@ function Subscriptions() {
   }, [currentView]);
 
   async function getCurrentSubscription() {
+    setIsLoadingSubscription(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/current");
+      const res = await axios.get('http://localhost:5000/api/current');
       const { data } = res;
       setSubscriptionData(data);
       setIsLoadingSubscription(false);
@@ -44,13 +45,13 @@ function Subscriptions() {
   async function onUpdateSubscriptionClick({
     plan,
     seats,
-    subscriptionPreviewData
+    subscriptionPreviewData,
   }) {
     setIsLoadingUpdateSubscription(true);
     try {
-      await axios.put("http://localhost:5000/api/current", {
+      await axios.put('http://localhost:5000/api/current', {
         plan,
-        seats
+        seats,
       });
       setIsLoadingUpdateSubscription(false);
       setSubscriptionPreviewData(subscriptionPreviewData);
@@ -71,7 +72,7 @@ function Subscriptions() {
             ) : (
               <SubscriptionSelection
                 subscriptionData={subscriptionData}
-                onUpdateSubscriptionClick={payload =>
+                onUpdateSubscriptionClick={(payload) =>
                   onUpdateSubscriptionClick(payload)
                 }
               />
@@ -89,11 +90,11 @@ function Subscriptions() {
           />
         );
       default:
-        throw new Error("Unknown case: ", currentView);
+        throw new Error('Unknown case: ', currentView);
     }
   };
 
-  return <div className="subscriptions-container">{renderCurrentView()}</div>;
+  return <div className='subscriptions-container'>{renderCurrentView()}</div>;
 }
 
 export default Subscriptions;

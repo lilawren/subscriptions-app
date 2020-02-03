@@ -62,7 +62,7 @@ function SubscriptionSelection({
 
       <div className='update-sub-button'>
         <Button
-          disabled={!hasPlanOrSeatsChanged}
+          disabled={!hasPlanOrSeatsChanged || isLoadingPreview}
           floated='right'
           className={classNames({ 'zd-blue': hasPlanOrSeatsChanged })}
           onClick={() =>

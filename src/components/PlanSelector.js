@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PlanSelector.scss';
-import { Dropdown, Input, Loader } from 'semantic-ui-react';
+import { Dropdown, Loader, Form } from 'semantic-ui-react';
 
 const planOptions = ['Basic', 'Good', 'Better', 'Best'].map((option) => ({
   value: option.toLowerCase(),
@@ -15,6 +15,8 @@ function PlanSelector({
   onSeatsChange,
   isLoadingCost,
 }) {
+  const [seats, setSeats] = useState(currentSeats);
+
   return (
     <div className='plan-selector-container'>
       <div className='plan-selector'>
@@ -31,12 +33,15 @@ function PlanSelector({
           <div className='quiet'>Plan</div>
         </div>
         <div>
-          <Input
-            defaultValue={currentSeats}
-            onBlur={(e) => {
-              onSeatsChange(parseInt(e.target.value));
-            }}
-          />
+          <Form onSubmit={() => onSeatsChange(seats)}>
+            <Form.Input
+              value={seats}
+              onBlur={(e) => {
+                onSeatsChange(parseInt(e.target.value));
+              }}
+              onChange={(e) => setSeats(parseInt(e.target.value))}
+            />
+          </Form>
           <div className='quiet'>Seats</div>
         </div>
         <div>
