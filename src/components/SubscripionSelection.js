@@ -4,7 +4,7 @@ import { Button, Loader } from "semantic-ui-react";
 import PlanSelector from "../components/PlanSelector";
 import axios from "axios";
 
-function SubscriptionSelection({ onUpdateClick }) {
+function SubscriptionSelection({ onUpdateSubscriptionClick }) {
   const [subscriptionData, setSubscriptionData] = useState({});
   const [isLoadingSubscription, setIsLoadingSubscription] = useState(true);
 
@@ -27,6 +27,7 @@ function SubscriptionSelection({ onUpdateClick }) {
       console.log(e);
     }
   }
+
   async function getSubscriptionPreview() {
     setIsLoadingPreview(true);
     try {
@@ -54,6 +55,10 @@ function SubscriptionSelection({ onUpdateClick }) {
     }
   }, [selectedPlan, selectedSeats]);
 
+  const hasPlanOrSeatsChanged =
+    subscriptionData.plan !== selectedPlan ||
+    subscriptionData.seats !== selectedSeats;
+
   return (
     <div className="subscription-selection-container">
       {isLoadingSubscription ? (
@@ -75,7 +80,16 @@ function SubscriptionSelection({ onUpdateClick }) {
 
           {JSON.stringify(subscriptionData)}
           <div className="update-sub-button">
-            <Button floated="right" onClick={onUpdateClick}>
+            <Button
+              disabled={!hasPlanOrSeatsChanged}
+              floated="right"
+              onClick={() =>
+                onUpdateSubscriptionClick({
+                  plan: selectedPlan,
+                  seats: selectedSeats
+                })
+              }
+            >
               Update Subscription
             </Button>
           </div>

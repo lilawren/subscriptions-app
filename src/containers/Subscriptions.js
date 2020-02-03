@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import './Subscriptions.scss';
-import SubscriptionSelection from '../components/SubscripionSelection';
-import SubscriptionChangeConfirmationPage from '../components/SubscriptionChangeConfirmationPage';
+import React, { useState } from "react";
+import "./Subscriptions.scss";
+import SubscriptionSelection from "../components/SubscripionSelection";
+import SubscriptionChangeConfirmationPage from "../components/SubscriptionChangeConfirmationPage";
+import axios from "axios";
+import { Loader } from "semantic-ui-react";
 
 const subscriptionViewState = {
-  SUBSCRIPTION_SELECTION: 'SUBSCRIPTION_SELECTION',
-  SUBSCRIPTION_CHANGE_CONFIRMATION: 'SUBSCRIPTION_CHANGE_CONFIRMATION',
+  SUBSCRIPTION_SELECTION: "SUBSCRIPTION_SELECTION",
+  SUBSCRIPTION_CHANGE_CONFIRMATION: "SUBSCRIPTION_CHANGE_CONFIRMATION"
 };
 
 function Subscriptions() {
@@ -13,19 +15,39 @@ function Subscriptions() {
     subscriptionViewState.SUBSCRIPTION_SELECTION
   );
 
+  const [
+    isLoadingUpdateSubscription,
+    setIsLoadingUpdateSubscription
+  ] = useState(false);
+
+  async function onUpdateSubscriptionClick(payload) {
+    setIsLoadingUpdateSubscription(true);
+    try {
+      await axios.put("http://localhost:5000/api/current", {
+        data: payload
+      });
+      setIsLoadingUpdateSubscription(false);
+      setCurrentView(subscriptionViewState.SUBSCRIPTION_CHANGE_CONFIRMATION);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const renderCurrentView = () => {
     switch (currentView) {
       case subscriptionViewState.SUBSCRIPTION_SELECTION:
         return (
           <div>
             <h1>Subscriptions</h1>
-            <SubscriptionSelection
-              onUpdateClick={() =>
-                setCurrentView(
-                  subscriptionViewState.SUBSCRIPTION_CHANGE_CONFIRMATION
-                )
-              }
-            />
+            {isLoadingUpdateSubscription ? (
+              <Loader active />
+            ) : (
+              <SubscriptionSelection
+                onUpdateSubscriptionClick={payload =>
+                  onUpdateSubscriptionClick(payload)
+                }
+              />
+            )}
           </div>
         );
       case subscriptionViewState.SUBSCRIPTION_CHANGE_CONFIRMATION:
@@ -37,11 +59,11 @@ function Subscriptions() {
           />
         );
       default:
-        throw new Error('Unknown case: ', currentView);
+        throw new Error("Unknown case: ", currentView);
     }
   };
 
-  return <div className='subscriptions-container'>{renderCurrentView()}</div>;
+  return <div className="subscriptions-container">{renderCurrentView()}</div>;
 }
 
 export default Subscriptions;
