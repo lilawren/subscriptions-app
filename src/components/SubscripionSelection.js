@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from "react";
+import * as classNames from "classnames";
+
 import "./SubscriptionSelection.scss";
-import { Button, Loader } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import PlanSelector from "../components/PlanSelector";
 import axios from "axios";
 
-function SubscriptionSelection({ onUpdateSubscriptionClick }) {
-  const [subscriptionData, setSubscriptionData] = useState({});
-  const [isLoadingSubscription, setIsLoadingSubscription] = useState(true);
-
+function SubscriptionSelection({
+  subscriptionData,
+  onUpdateSubscriptionClick
+}) {
   const [isLoadingPreview, setIsLoadingPreview] = useState(false);
 
   const [selectedPlan, setSelectedPlan] = useState("");
   const [selectedSeats, setSelectedSeats] = useState("");
   const [cost, setCost] = useState("");
-
-  async function getCurrentSubscription() {
-    try {
-      const res = await axios.get("http://localhost:5000/api/current");
-      const { data } = res;
-      setSubscriptionData(data);
-      setSelectedPlan(data.plan);
-      setSelectedSeats(data.seats);
-      setCost(data.cost);
-      setIsLoadingSubscription(false);
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   async function getSubscriptionPreview() {
     setIsLoadingPreview(true);
@@ -46,13 +34,13 @@ function SubscriptionSelection({ onUpdateSubscriptionClick }) {
   }
 
   useEffect(() => {
-    getCurrentSubscription();
+    setSelectedPlan(subscriptionData.plan);
+    setSelectedSeats(subscriptionData.seats);
+    setCost(subscriptionData.cost);
   }, []);
 
   useEffect(() => {
-    if (!isLoadingSubscription) {
-      getSubscriptionPreview();
-    }
+    getSubscriptionPreview();
   }, [selectedPlan, selectedSeats]);
 
   const hasPlanOrSeatsChanged =
@@ -61,40 +49,35 @@ function SubscriptionSelection({ onUpdateSubscriptionClick }) {
 
   return (
     <div className="subscription-selection-container">
-      {isLoadingSubscription ? (
-        <Loader active />
-      ) : (
-        <>
-          <PlanSelector
-            currentPlan={selectedPlan}
-            currentSeats={selectedSeats}
-            cost={cost}
-            onPlanChange={val => {
-              setSelectedPlan(val);
-            }}
-            onSeatsChange={val => {
-              setSelectedSeats(val);
-            }}
-            isLoadingCost={isLoadingPreview}
-          />
+      <PlanSelector
+        currentPlan={selectedPlan}
+        currentSeats={selectedSeats}
+        cost={cost}
+        onPlanChange={val => {
+          setSelectedPlan(val);
+        }}
+        onSeatsChange={val => {
+          setSelectedSeats(val);
+        }}
+        isLoadingCost={isLoadingPreview}
+      />
 
-          {JSON.stringify(subscriptionData)}
-          <div className="update-sub-button">
-            <Button
-              disabled={!hasPlanOrSeatsChanged}
-              floated="right"
-              onClick={() =>
-                onUpdateSubscriptionClick({
-                  plan: selectedPlan,
-                  seats: selectedSeats
-                })
-              }
-            >
-              Update Subscription
-            </Button>
-          </div>
-        </>
-      )}
+      {JSON.stringify(subscriptionData)}
+      <div className="update-sub-button">
+        <Button
+          disabled={!hasPlanOrSeatsChanged}
+          floated="right"
+          className={classNames({ "zd-blue": hasPlanOrSeatsChanged })}
+          onClick={() =>
+            onUpdateSubscriptionClick({
+              plan: selectedPlan,
+              seats: selectedSeats
+            })
+          }
+        >
+          Update Subscription
+        </Button>
+      </div>
     </div>
   );
 }

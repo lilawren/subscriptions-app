@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Subscriptions.scss";
 import SubscriptionSelection from "../components/SubscripionSelection";
 import SubscriptionChangeConfirmationPage from "../components/SubscriptionChangeConfirmationPage";
@@ -20,6 +20,24 @@ function Subscriptions() {
     setIsLoadingUpdateSubscription
   ] = useState(false);
 
+  const [subscriptionData, setSubscriptionData] = useState({});
+  const [isLoadingSubscription, setIsLoadingSubscription] = useState(true);
+
+  useEffect(() => {
+    getCurrentSubscription();
+  }, []);
+
+  async function getCurrentSubscription() {
+    try {
+      const res = await axios.get("http://localhost:5000/api/current");
+      const { data } = res;
+      setSubscriptionData(data);
+      setIsLoadingSubscription(false);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async function onUpdateSubscriptionClick(payload) {
     setIsLoadingUpdateSubscription(true);
     try {
@@ -39,10 +57,11 @@ function Subscriptions() {
         return (
           <div>
             <h1>Subscriptions</h1>
-            {isLoadingUpdateSubscription ? (
+            {isLoadingUpdateSubscription || isLoadingSubscription ? (
               <Loader active />
             ) : (
               <SubscriptionSelection
+                subscriptionData={subscriptionData}
                 onUpdateSubscriptionClick={payload =>
                   onUpdateSubscriptionClick(payload)
                 }

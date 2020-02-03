@@ -23,7 +23,7 @@ function PlanSelector({
             options={planOptions}
             fluid
             selection
-            defaultValue={currentPlan}
+            value={currentPlan}
             onChange={(e, { value }) => {
               onPlanChange(value);
             }}
