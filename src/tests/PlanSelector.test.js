@@ -51,7 +51,21 @@ describe('[UNIT] Testing the PlanSelector component', () => {
     });
   });
 
-  describe('Trigger plan cost recalculation', () => {
+  describe('Seats input value', () => {
+    beforeEach(() => {
+      wrapper = mount(<PlanSelector {...initialProps} />);
+    });
+
+    it('should only allow integers when user types in the input', () => {
+      let input = wrapper.find('input');
+      input.simulate('change', {
+        target: { value: 'invalid input!' },
+      });
+      expect(wrapper.find('input').instance().value).toEqual('0');
+    });
+  });
+
+  describe('Plan cost recalculation trigger', () => {
     let newSeats, newPlan;
     let mockOnSeatsChange = jest
       .fn()
