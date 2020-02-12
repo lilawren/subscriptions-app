@@ -3,7 +3,7 @@ import * as classNames from 'classnames';
 
 import './SubscriptionSelection.scss';
 import { Button } from 'semantic-ui-react';
-import PlanSelector from '../components/PlanSelector';
+import PlanSelector from './PlanSelector';
 import axios from 'axios';
 
 function SubscriptionSelection({
