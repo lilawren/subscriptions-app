@@ -52,9 +52,17 @@ describe('[UNIT] Testing the PlanSelector component', () => {
   });
 
   describe('Trigger plan cost recalculation', () => {
+    let newSeats, newPlan;
+    let mockOnSeatsChange = jest
+      .fn()
+      .mockImplementation((seats) => (newSeats = seats));
+    let mockOnPlanChange = jest
+      .fn()
+      .mockImplementation((plan) => (newPlan = plan));
     let baseProps = {
       ...initialProps,
-      onSeatsChange: jest.fn(),
+      onSeatsChange: mockOnSeatsChange,
+      onPlanChange: mockOnPlanChange,
     };
 
     beforeEach(() => {
@@ -69,10 +77,37 @@ describe('[UNIT] Testing the PlanSelector component', () => {
 
       input.simulate('blur');
       expect(baseProps.onSeatsChange).toHaveBeenCalledTimes(1);
+      expect(newSeats).toEqual(12);
+      newSeats = undefined;
+      mockOnSeatsChange.mockClear();
     });
 
-    it('should call props function onSeatsChange when user presses enter when focused on seats input', () => {});
+    it('should call props function onSeatsChange when user presses enter when focused on seats input', () => {
+      let input = wrapper.find('input');
+      input.simulate('change', {
+        target: { value: '12' },
+      });
 
-    it('should call props function onPlanChange when user changes the plan input', () => {});
+      input.simulate('submit');
+      expect(baseProps.onSeatsChange).toHaveBeenCalledTimes(1);
+      expect(newSeats).toEqual(12);
+      newSeats = undefined;
+      mockOnSeatsChange.mockClear();
+    });
+
+    it('should call props function onPlanChange when user changes the plan dropdown', () => {
+      let dropdown = wrapper.find({ role: 'listbox' }).find({ role: 'alert' });
+      dropdown.simulate('click');
+
+      let option = wrapper
+        .find({ role: 'option', 'aria-checked': false })
+        .first();
+      option.simulate('click');
+
+      expect(baseProps.onPlanChange).toHaveBeenCalledTimes(1);
+      expect(newPlan).toEqual('basic');
+      newPlan = undefined;
+      mockOnPlanChange.mockClear();
+    });
   });
 });
