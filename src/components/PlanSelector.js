@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './PlanSelector.scss';
 import { Dropdown, Loader, Form } from 'semantic-ui-react';
+import './PlanSelector.scss';
 
 const planOptions = ['Basic', 'Good', 'Better', 'Best'].map((option) => ({
   value: option.toLowerCase(),
