@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Subscriptions.scss';
-import SubscriptionSelection from '../components/SubscripionSelection';
+import SubscriptionSelection from '../components/SubscriptionSelection';
 import SubscriptionChangeConfirmationPage from '../components/SubscriptionChangeConfirmationPage';
 import axios from 'axios';
 import { Loader } from 'semantic-ui-react';

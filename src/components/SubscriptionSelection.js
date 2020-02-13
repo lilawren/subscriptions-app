@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import * as classNames from 'classnames';
-
-import './SubscriptionSelection.scss';
 import { Button } from 'semantic-ui-react';
-import PlanSelector from '../components/PlanSelector';
+import classNames from 'classnames';
+import PlanSelector from './PlanSelector';
 import axios from 'axios';
+import './SubscriptionSelection.scss';
 
 function SubscriptionSelection({
   subscriptionData,

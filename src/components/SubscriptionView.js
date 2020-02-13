@@ -1,5 +1,5 @@
 import React from 'react';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 import './SubscriptionView.scss';
 
 // updatedFields is an array of fields that were updated
